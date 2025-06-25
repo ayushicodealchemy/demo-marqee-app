@@ -1,28 +1,24 @@
-
-import express from "express";
-import compression from "compression";
-import shopify from "./app/shopify.server.js"; 
-import { createRequestHandler } from "@remix-run/express";
+import { createRequestHandler } from '@remix-run/express';
+import express from 'express';
+import compression from 'compression';
+import morgan from 'morgan';
 
 const app = express();
 
 app.use(compression());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(morgan('tiny'));
 
-// Serve static files
-app.use(express.static("public"));
-
-// Shopify auth/session/webhook middleware
-app.use(shopify);
-
-// Remix request handler (must be last)
 app.all(
-  "*",
+  '*',
   createRequestHandler({
-    build: require("./build"),
-    mode: process.env.NODE_ENV,
+    getLoadContext() {
+      return {};
+    },
   })
 );
 
-export default app;
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
