@@ -1,5 +1,5 @@
 {
-  "name": "simple-marquee-ease",
+  "name": "demo-marqee-app",
   "private": true,
   "scripts": {
     "build": "remix vite:build",
