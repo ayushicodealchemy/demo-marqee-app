@@ -5,16 +5,5 @@
     "env": {
       "NPM_CONFIG_LEGACY_PEER_DEPS": "true"
     }
-  },
-   "functions": {
-    "api/index.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
-    {
-      "src": "/.*",
-      "dest": "/api/index.js"
-    }
-  ]
+  }
 }
