@@ -1,0 +1,56 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "3f78da6a1110e83a71cc6aef3ec0d5ef"
+name = "Simple Marquee Ease"
+handle = "simple-marquee-ease"
+application_url = "https://marqee-app.onrender.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+automatically_update_urls_on_dev = false
+
+[webhooks]
+api_version = "2025-04"
+
+  [[webhooks.subscriptions]]
+  uri = "/customers/data_request"
+  compliance_topics = [ "customers/data_request" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/customers/redact"
+  compliance_topics = [ "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/shop/redact"
+  compliance_topics = [ "shop/redact" ]
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks.app.uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks.app.scopes_update"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://marqee-app.onrender.com/auth/callback",
+  "https://marqee-app.onrender.com/auth/shopify/callback",
+  "https://marqee-app.onrender.com/api/auth/callback"
+]
+
+[pos]
+embedded = false
+
+[access.admin]
+direct_api_mode = "online"
+
+[app_proxy]
+url = "https://marqee-app.onrender.com/api/proxy"
+subpath = "store-pickup"
+prefix = "apps"

@@ -1,0 +1,181 @@
+<style>
+  .section-{{ section.id }}.custom-marquee {
+    display: flex;
+    align-items: center;
+    height: {{ block.settings.marquee_height }}px;
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+    background: {{ block.settings.colorBackground }};
+    color: {{ block.settings.colorText }};
+  }
+
+  .section-{{ section.id }}.custom-marquee a {
+    color: {{ block.settings.colorText }};
+    text-decoration: none;
+  }
+
+  .section-{{ section.id }}.custom-marquee .track {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    will-change: transform;
+    animation: 
+      {% if block.settings.direction == 'left_to_right' %}
+        marquee-left-to-right {{ block.settings.speed }}s linear infinite;
+      {% else %}
+        marquee-right-to-left {{ block.settings.speed }}s linear infinite;
+      {% endif %}
+  }
+
+  .section-{{ section.id }}.custom-marquee .content {
+    margin-right: 40px;
+    padding-left: 5px;
+    font-size: {{ block.settings.font_size }}px;
+  }
+
+  .section-{{ section.id }}.custom-marquee svg {
+    fill: {{ block.settings.colorText }};
+  }
+  
+
+  .section-{{ section.id }}.custom-marquee img {
+    width: calc({{ block.settings.image_width }}px + 50px);
+  }
+
+  /* Define the left-to-right animation */
+  @keyframes marquee-left-to-right {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-20%);
+    }
+  }
+
+  /* Define the right-to-left animation */
+  @keyframes marquee-right-to-left {
+    from {
+      transform: translateX(-20%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+</style>
+
+<div class="section-{{ section.id }} custom-marquee">
+  <div class="track">
+    <div class="content-wrapper">
+      {% for i in (1..100) %}
+        <span class="content">
+          {% if block.settings.image %}
+            <img src="{{ block.settings.image | image_url: width: 533 }}" width="150" height="100%" />
+          {% else %}
+            {% if block.settings.heading %}
+              {% if block.settings.link %}
+                <a href="{{ block.settings.link }}" {% if block.settings.open_new_tab %}target="_blank"{% endif %}>
+                  {{ block.settings.heading }}
+                </a>
+              {% else %}
+                {{ block.settings.heading }}
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        </span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Simple Marquee Bar",
+  "target": "section",
+  "enabled_on": {
+    "templates": ["*"]
+  },
+  "settings": [
+    {
+      "type": "color",
+      "id": "colorBackground",
+      "label": "Background color",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "colorText",
+      "label": "Text color",
+      "default": "#fff"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "range",
+      "id": "marquee_height",
+      "min": 24,
+      "max": 200,
+      "step": 2,
+      "default": 46,
+      "label": "Marquee height"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 8,
+      "max": 100,
+      "step": 2,
+      "default": 24,
+      "label": "Font size"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Text",
+      "default": "🚚 Welcome to our store"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scrolling Speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "label": "Marquee Direction",
+      "options": [
+        {
+          "value": "right_to_left",
+          "label": "Right to Left"
+        },
+        {
+          "value": "left_to_right",
+          "label": "Left to Right"
+        }
+      ],
+      "default": "right_to_left"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 10,
+      "max": 200,
+      "step": 2,
+      "default": 100,
+      "label": "Image size"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image for Marquee"
+    }
+  ]
+}
+{% endschema %}
